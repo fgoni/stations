@@ -12,10 +12,23 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css')
+    .postCss('resources/css/app.css', 'public/css', [
+        require('tailwindcss'),
+        require('autoprefixer'),
+    ])
     .options({
-        postCss: [
-            require('tailwindcss'),
-            require('autoprefixer'),
-        ],
+        processCssUrls: false,
+        postCss: {
+            plugins: [
+                require('tailwindcss'),
+                require('autoprefixer'),
+            ]
+        }
+    })
+    .webpackConfig({
+        watchOptions: {
+            ignored: /node_modules/,
+            aggregateTimeout: 300,
+            poll: 1000
+        }
     });

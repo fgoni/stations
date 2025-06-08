@@ -4,22 +4,30 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <title>{{ config('app.name') }}</title>
+    <!-- Preload critical assets -->
+    <link rel="preload" href="{{ asset('css/app.css') }}" as="style">
+    <link rel="preload" href="{{ asset('js/app.js') }}" as="script">
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" as="style">
+    
     <!-- Styles -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    
+    <!-- Inline critical CSS -->
     <style>
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
             background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             min-height: 100vh;
+            margin: 0;
+            padding: 0;
         }
         .image-container {
             position: relative;
+            contain: content; /* Optimize paint and layout */
+            will-change: transform; /* Optimize animations */
         }
         .bookmark-btn {
             position: absolute;
@@ -37,6 +45,7 @@
             cursor: pointer;
             opacity: 0;
             transition: opacity 0.3s ease;
+            will-change: opacity; /* Optimize animations */
         }
         .image-container:hover .bookmark-btn {
             opacity: 1;
@@ -71,6 +80,7 @@
             transform-origin: top;
             transition: all 0.2s ease;
             margin-top: 8px;
+            will-change: transform, opacity; /* Optimize animations */
         }
         .dropdown:hover .dropdown-content {
             display: block;
@@ -101,108 +111,64 @@
             }
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-    <script>
-        function showToast(message, isBookmarked) {
-            Toastify({
-                text: message,
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                style: {
-                    background: "white",
-                    color: "black",
-                    border: "1px solid black",
-                }
-            }).showToast();
-        }
 
-        function toggleBookmark(station, button) {
-            const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-            const existingIndex = bookmarks.findIndex(b => b.url === station.url);
-            
-            if (existingIndex !== -1) {
-                bookmarks.splice(existingIndex, 1);
-                button.classList.remove('bookmarked');
-                showToast('Station removed from bookmarks', false);
-            } else {
-                // Add to the beginning of the array for LIFO order
-                bookmarks.unshift(station);
-                button.classList.add('bookmarked');
-                showToast('Station added to bookmarks', true);
-            }
-            
-            localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
-
-            // If we're on the bookmarks page, remove the image container when unbookmarked
-            if (window.location.pathname === '/bookmarks') {
-                const container = button.closest('.image-container');
-                if (container) {
-                    container.remove();
-                    // If no more bookmarks, show the empty message
-                    const bookmarksContainer = document.getElementById('bookmarks-container');
-                    if (bookmarksContainer && bookmarksContainer.children.length === 0) {
-                        bookmarksContainer.innerHTML = '<p class="text-white text-center w-full">No bookmarked stations yet.</p>';
-                    }
-                }
-            }
-        }
-
-        // Initialize bookmark states when the page loads
-        document.addEventListener('DOMContentLoaded', function() {
-            // Only initialize bookmark states if we're not on the bookmarks page
-            if (window.location.pathname !== '/bookmarks') {
-                const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-                document.querySelectorAll('.image-container').forEach(container => {
-                    const url = container.getAttribute('data-url');
-                    const button = container.querySelector('.bookmark-btn');
-                    if (bookmarks.some(b => b.url === url)) {
-                        button.classList.add('bookmarked');
-                    }
-                });
-            }
-        });
-    </script>
+    <!-- Defer non-critical JavaScript -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/modal.js') }}" defer></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" defer></script>
 </head>
 <body class="antialiased flex flex-col">
-<h2 class="text-white font-bold text-3xl text-center my-3 capitalize">{{ config('app.name') }}</h2>
-<nav class="flex justify-center mb-8">
-    <div class="dropdown">
-        <button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors">
-            Browse Stations
-            <i class="fas fa-chevron-down text-sm"></i>
-        </button>
-        <div class="dropdown-content">
-            <a href="{{ url('averagebattlestations') }}" class="{{ request()->path() === 'averagebattlestations' ? 'active' : '' }}">
-                Average Battlestations
-            </a>
-            <a href="{{ url('workstations') }}" class="{{ request()->path() === 'workstations' ? 'active' : '' }}">
-                Work Stations
-            </a>
-            <a href="{{ url('battlestations') }}" class="{{ request()->path() === 'battlestations' ? 'active' : '' }}">
-                Battlestations
-            </a>
-            <a href="{{ url('macsetups') }}" class="{{ request()->path() === 'macsetups' ? 'active' : '' }}">
-                Mac Setups
-            </a>
-            <a href="{{ url('shittybattlestations') }}" class="{{ request()->path() === 'shittybattlestations' ? 'active' : '' }}">
-                Shitty Battlestations
-            </a>
-            <a href="{{ route('bookmarks.index') }}" class="{{ request()->path() === 'bookmarks' ? 'active' : '' }}">
-                Bookmarks
-            </a>
+    <div class="relative">
+        <div class="absolute top-4 left-4 z-20">
+            <i class="fas fa-question-circle text-white text-xl cursor-pointer" id="help-icon"></i>
         </div>
     </div>
-</nav>
-<main class="flex-grow">
-    @yield('content')
-</main>
-<footer class="mt-auto py-4 text-center text-gray-400 text-sm">
-    Made with ❤️ by <a href="https://coffeedevs.com" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-white transition-colors">CoffeeDevs</a>
-</footer>
-<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
-<script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <h2 class="text-white font-bold text-3xl text-center my-3 capitalize">{{ config('app.name') }}</h2>
+    <nav class="flex justify-center mb-8">
+        <div class="dropdown">
+            <button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors">
+                Browse Stations
+                <i class="fas fa-chevron-down text-sm"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url('averagebattlestations') }}" class="{{ request()->path() === 'averagebattlestations' ? 'active' : '' }}">
+                    Average Battlestations
+                </a>
+                <a href="{{ url('workstations') }}" class="{{ request()->path() === 'workstations' ? 'active' : '' }}">
+                    Work Stations
+                </a>
+                <a href="{{ url('battlestations') }}" class="{{ request()->path() === 'battlestations' ? 'active' : '' }}">
+                    Battlestations
+                </a>
+                <a href="{{ url('macsetups') }}" class="{{ request()->path() === 'macsetups' ? 'active' : '' }}">
+                    Mac Setups
+                </a>
+                <a href="{{ url('shittybattlestations') }}" class="{{ request()->path() === 'shittybattlestations' ? 'active' : '' }}">
+                    Shitty Battlestations
+                </a>
+                <a href="{{ route('bookmarks.index') }}" class="{{ request()->path() === 'bookmarks' ? 'active' : '' }}">
+                    Bookmarks
+                </a>
+            </div>
+        </div>
+    </nav>
+    <main class="flex-grow">
+        @yield('content')
+    </main>
+    <footer class="mt-auto py-4 text-center text-gray-400 text-sm">
+        Made with ❤️ by <a href="https://coffeedevs.com" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-white transition-colors">CoffeeDevs</a>
+    </footer>
 
+    <!-- The Modal -->
+    <div id="help-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white text-black p-6 rounded-lg shadow-xl max-w-md mx-4 relative">
+            <button class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-2xl font-bold" id="close-modal-btn">&times;</button>
+            <h3 class="text-xl font-bold mb-4">About Stations</h3>
+            <p>
+                Stations is a demo project built to showcase a Laravel app running on Vercel infrastructure, showing how a PHP runtime can be used for backend on Vercel on-demand.
+            </p>
+        </div>
+    </div>
 </body>
 </html>

@@ -17,32 +17,57 @@
                 return;
             }
 
+            // Create a document fragment for better performance
+            const fragment = document.createDocumentFragment();
+            
             // Bookmarks are already in LIFO order from localStorage
             bookmarks.forEach(station => {
                 const div = document.createElement('div');
                 div.className = 'image-container rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02]';
                 div.setAttribute('data-url', station.url);
-                div.innerHTML = `
-                    <a href="${station.url}" target="_blank" rel="noopener noreferrer">
-                        <img 
-                            src="${station.url}" 
-                            alt="${station.title || 'Bookmarked station'}" 
-                            class="w-full h-auto object-cover"
-                            loading="lazy"
-                            decoding="async"
-                        >
-                    </a>
-                    <button class="bookmark-btn bookmarked" onclick="toggleBookmark(${JSON.stringify(station)}, this)" data-url="${station.url}" title="Remove bookmark">
-                        <i class="fas fa-star"></i>
-                    </button>
-                    ${station.title ? `
-                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
-                            ${station.title}
-                        </div>
-                    ` : ''}
-                `;
-                container.appendChild(div);
+                
+                // Create elements instead of using innerHTML for better performance
+                const link = document.createElement('a');
+                link.href = station.url;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                
+                const img = document.createElement('img');
+                img.src = station.url;
+                img.alt = station.title || 'Bookmarked station';
+                img.className = 'w-full h-auto object-cover';
+                img.loading = 'lazy';
+                img.decoding = 'async';
+                img.width = 800; // Set a default width
+                img.height = 600; // Set a default height
+                
+                // Add error handling for images
+                img.onerror = function() {
+                    this.src = '/images/placeholder.jpg'; // Add a placeholder image
+                };
+                
+                const button = document.createElement('button');
+                button.className = 'bookmark-btn bookmarked';
+                button.onclick = () => toggleBookmark(station, button);
+                button.setAttribute('data-url', station.url);
+                button.title = 'Remove bookmark';
+                button.innerHTML = '<i class="fas fa-star"></i>';
+                
+                link.appendChild(img);
+                div.appendChild(link);
+                div.appendChild(button);
+                
+                if (station.title) {
+                    const titleDiv = document.createElement('div');
+                    titleDiv.className = 'absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2';
+                    titleDiv.textContent = station.title;
+                    div.appendChild(titleDiv);
+                }
+                
+                fragment.appendChild(div);
             });
+            
+            container.appendChild(fragment);
         });
     </script>
 @endsection 
