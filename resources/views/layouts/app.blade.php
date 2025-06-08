@@ -5,45 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ config('app.name') }}</title>
-
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Syne+Mono:wght@400;600;700&display=swap" rel="stylesheet">
-
     <!-- Styles -->
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
-            font-family: 'Syne Mono', 'Nunito';
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         }
     </style>
     <!-- Add the slick-theme.css if you want default styling -->
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     <!-- Add the slick-theme.css if you want default styling -->
     <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
-    <style>
-        .container {
-            max-height: 60vh;
-        }
-
-        .active:after {
-            content: '';
-            height: 3px;
-            background: white;
-            display: block;
-            border-radius: 4px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                max-height: 90vh;
-            }
-        }
-    </style>
 </head>
-<body class="antialiased bg-gray-800 flex flex-col">
-<h2 class="text-white font-bold text-3xl text-center my-3 lowercase"
-    style="text-shadow: 0 3px 5px rgba(255,255,255,0.5);">{{ config('app.name') }}</h2>
+<body class="antialiased bg-black flex flex-col">
+<h2 class="text-white font-bold text-3xl text-center my-3 lowercase">{{ config('app.name') }}</h2>
 <nav>
     <ul class="flex justify-around mx-auto text-white text-xl font-bold lowercase flex-col md:flex-row text-center">
         <li class="{{ request()->path() === 'averagebattlestations' ? 'active' : '' }}"><a
@@ -61,6 +36,9 @@
     </ul>
 </nav>
 @yield('content')
+<footer class="mt-auto py-4 text-center text-gray-500 text-sm">
+    Made with ❤️ by <a href="https://coffeedevs.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">CoffeeDevs</a>
+</footer>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
