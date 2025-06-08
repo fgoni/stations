@@ -15,6 +15,8 @@
     <style>
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
         }
         .image-container {
             position: relative;
@@ -53,6 +55,50 @@
             padding: 12px 20px;
             font-weight: 500;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background: linear-gradient(to bottom, #2d2d2d, #1a1a1a);
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            border-radius: 8px;
+            z-index: 1;
+            transform-origin: top;
+            transition: all 0.2s ease;
+            margin-top: 8px;
+        }
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: dropdownFade 0.2s ease;
+        }
+        .dropdown-content a {
+            color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            transition: all 0.2s ease;
+        }
+        .dropdown-content a:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .dropdown-content a.active {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+        @keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
@@ -118,31 +164,41 @@
         });
     </script>
 </head>
-<body class="antialiased bg-black flex flex-col">
+<body class="antialiased flex flex-col">
 <h2 class="text-white font-bold text-3xl text-center my-3 capitalize">{{ config('app.name') }}</h2>
-<nav>
-    <ul class="flex justify-around mx-auto text-white text-xl font-bold capitalize flex-col md:flex-row text-center">
-        <li class="{{ request()->path() === 'averagebattlestations' ? 'active' : '' }}"><a
-                href="{{ url('averagebattlestations') }}">Average Battlestations</a></li>
-        <li class="{{ request()->path() === 'workstations' ? 'active' : '' }}"><a
-                href="{{ url('workstations') }}">Work
-                Stations</a></li>
-        <li class="{{ request()->path() === 'battlestations' ? 'active' : '' }}"><a
-                href="{{ url('battlestations') }}">Battlestations</a>
-        </li>
-        <li class="{{ request()->path() === 'macsetups' ? 'active' : '' }}"><a href="{{ url('macsetups') }}">Mac
-                Setups</a></li>
-        <li class="{{ request()->path() === 'shittybattlestations' ? 'active' : '' }}"><a
-                href="{{ url('shittybattlestations') }}">Shitty Battlestations</a></li>
-        <li class="{{ request()->path() === 'bookmarks' ? 'active' : '' }}"><a
-                href="{{ route('bookmarks.index') }}">Bookmarks</a></li>
-    </ul>
+<nav class="flex justify-center mb-8">
+    <div class="dropdown">
+        <button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors">
+            Browse Stations
+            <i class="fas fa-chevron-down text-sm"></i>
+        </button>
+        <div class="dropdown-content">
+            <a href="{{ url('averagebattlestations') }}" class="{{ request()->path() === 'averagebattlestations' ? 'active' : '' }}">
+                Average Battlestations
+            </a>
+            <a href="{{ url('workstations') }}" class="{{ request()->path() === 'workstations' ? 'active' : '' }}">
+                Work Stations
+            </a>
+            <a href="{{ url('battlestations') }}" class="{{ request()->path() === 'battlestations' ? 'active' : '' }}">
+                Battlestations
+            </a>
+            <a href="{{ url('macsetups') }}" class="{{ request()->path() === 'macsetups' ? 'active' : '' }}">
+                Mac Setups
+            </a>
+            <a href="{{ url('shittybattlestations') }}" class="{{ request()->path() === 'shittybattlestations' ? 'active' : '' }}">
+                Shitty Battlestations
+            </a>
+            <a href="{{ route('bookmarks.index') }}" class="{{ request()->path() === 'bookmarks' ? 'active' : '' }}">
+                Bookmarks
+            </a>
+        </div>
+    </div>
 </nav>
 <main class="flex-grow">
     @yield('content')
 </main>
-<footer class="mt-auto py-4 text-center text-gray-500 text-sm">
-    Made with ❤️ by <a href="https://coffeedevs.com" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-white transition-colors">CoffeeDevs</a>
+<footer class="mt-auto py-4 text-center text-gray-400 text-sm">
+    Made with ❤️ by <a href="https://coffeedevs.com" target="_blank" rel="noopener noreferrer" class="text-gray-300 hover:text-white transition-colors">CoffeeDevs</a>
 </footer>
 <script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>

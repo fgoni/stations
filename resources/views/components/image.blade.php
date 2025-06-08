@@ -1,8 +1,14 @@
 @props(['url', 'title' => null])
 
-<div class="image-container" data-url="{{ $url }}">
+<div class="image-container rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02]">
     <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">
-        <img src="{{ $url }}" alt="{{ $title ?? 'Post image' }}" class="w-full h-auto object-cover">
+        <img 
+            src="{{ $url }}" 
+            alt="{{ $title ?? 'Post image' }}" 
+            class="w-full h-auto object-cover"
+            loading="lazy"
+            decoding="async"
+        >
     </a>
     <button 
         class="bookmark-btn" 
