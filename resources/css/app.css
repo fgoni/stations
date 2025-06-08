@@ -11,12 +11,14 @@
     body {
         @apply min-h-screen bg-gradient-to-br from-gray-900 to-gray-800;
         overscroll-behavior: none;
+        scroll-snap-type: y mandatory;
     }
 }
 
 @layer components {
     .image-container {
         @apply relative rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02];
+        scroll-snap-align: start;
     }
 
     .bookmark-btn {

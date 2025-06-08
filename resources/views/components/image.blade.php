@@ -1,4 +1,4 @@
-@props(['url', 'title' => null])
+@props(['url', 'title' => null, 'width' => null, 'height' => null])
 
 <div class="image-container rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02]">
     <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">
@@ -8,11 +8,13 @@
             class="w-full h-auto object-cover"
             loading="lazy"
             decoding="async"
+            @if($width) width="{{ $width }}" @endif
+            @if($height) height="{{ $height }}" @endif
         >
     </a>
     <button 
         class="bookmark-btn" 
-        onclick="toggleBookmark({{ json_encode(['url' => $url, 'title' => $title]) }}, this)" 
+        onclick="toggleBookmark({{ json_encode(['url' => $url, 'title' => $title, 'width' => $width, 'height' => $height]) }}, this)" 
         data-url="{{ $url }}" 
         title="Bookmark station"
     >

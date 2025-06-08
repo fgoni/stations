@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="content flex-grow flex flex-wrap mx-4 justify-center gap-4">
-        <div id="bookmarks-container" class="flex flex-wrap justify-center gap-4">
+        <div id="bookmarks-container" class="flex flex-wrap justify-center gap-4 min-h-[300px]">
             <!-- Bookmarks will be loaded here via JavaScript -->
         </div>
     </div>
@@ -38,8 +38,8 @@
                 img.className = 'w-full h-auto object-cover';
                 img.loading = 'lazy';
                 img.decoding = 'async';
-                img.width = 800; // Set a default width
-                img.height = 600; // Set a default height
+                img.width = station.width || 800; // Use stored width or default
+                img.height = station.height || 600; // Use stored height or default
                 
                 // Add error handling for images
                 img.onerror = function() {
