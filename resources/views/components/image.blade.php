@@ -1,7 +1,20 @@
-@props(['url'])
+@props(['url', 'title' => null])
 
-<div class="container flex flex-col items-center text-center my-6 overflow-visible px-4">
-    <a href="{{ $url }}" target="_blank" rel="noopener noreferrer" class="block">
-        <img src="{{ $url }}" class="rounded shadow" alt="">
+<div class="image-container" data-url="{{ $url }}">
+    <a href="{{ $url }}" target="_blank" rel="noopener noreferrer">
+        <img src="{{ $url }}" alt="{{ $title ?? 'Post image' }}" class="w-full h-auto object-cover">
     </a>
+    <button 
+        class="bookmark-btn" 
+        onclick="toggleBookmark({{ json_encode(['url' => $url, 'title' => $title]) }}, this)" 
+        data-url="{{ $url }}" 
+        title="Bookmark station"
+    >
+        <i class="fas fa-star"></i>
+    </button>
+    @if($title)
+        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 text-white p-2">
+            {{ $title }}
+        </div>
+    @endif
 </div> 

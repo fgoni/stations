@@ -15,20 +15,48 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function (Reddit $reddit) {
-    $posts = $reddit->posts()->filter(function($post){
-        return str_contains($post->url, 'i.redd.it');
-    });
+Route::get('/', function () {
     return view('battlestations', [
-        'posts' => $posts,
+        'posts' => app(Reddit::class)->posts('battlestations'),
     ]);
 });
 
-Route::get('{subreddit}', function (Reddit $reddit, $subreddit) {
-    $posts = $reddit->posts($subreddit)->filter(function($post){
-        return str_contains($post->url, 'i.redd.it');
-    });
+Route::get('/battlestations', function () {
     return view('battlestations', [
-        'posts' => $posts,
+        'posts' => app(Reddit::class)->posts('battlestations'),
+    ]);
+});
+
+Route::get('/workstations', function () {
+    return view('workstations', [
+        'posts' => app(Reddit::class)->posts('workstations'),
+    ]);
+});
+
+Route::get('/macsetups', function () {
+    return view('macsetups', [
+        'posts' => app(Reddit::class)->posts('macsetups'),
+    ]);
+});
+
+Route::get('/averagebattlestations', function () {
+    return view('battlestations', [
+        'posts' => app(Reddit::class)->posts('AverageBattlestations'),
+    ]);
+});
+
+Route::get('/shittybattlestations', function () {
+    return view('battlestations', [
+        'posts' => app(Reddit::class)->posts('shittybattlestations'),
+    ]);
+});
+
+Route::get('/bookmarks', function () {
+    return view('bookmarks.index');
+})->name('bookmarks.index');
+
+Route::get('{subreddit}', function (Reddit $reddit, $subreddit) {
+    return view('battlestations', [
+        'posts' => $reddit->posts($subreddit),
     ]);
 });
