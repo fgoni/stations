@@ -1,7 +1,4 @@
 {
-    "/js/app.js": "/js/app.js?id=66ec967052ccf7012f5db5c5a7235a2f",
-    "/js/modal.js": "/js/modal.js?id=b4917146f33685af7f9d04ad1920933d",
-    "/js/layout.js": "/js/layout.js?id=df51fff81ff5844c76008b2158a36e26",
-    "/js/dropdown.js": "/js/dropdown.js?id=a21d7aee5686463ad4c0c1b646f59260",
-    "/css/app.css": "/css/app.css?id=97dd35e3563c969ca0c712578f56f79b"
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css"
 }

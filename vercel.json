@@ -12,8 +12,8 @@
   "env": {
     "APP_ENV": "local",
     "APP_DEBUG": "true",
-    "APP_URL": "https://${VERCEL_URL}",
-    "ASSET_URL": "https://${VERCEL_URL}",
+    "APP_URL": "https://stations-coral.vercel.app",
+    "ASSET_URL": "https://stations-coral.vercel.app",
     "APP_CONFIG_CACHE": "/tmp/config.php",
     "APP_EVENTS_CACHE": "/tmp/events.php",
     "APP_PACKAGES_CACHE": "/tmp/packages.php",
