@@ -23,7 +23,15 @@ class Reddit
         $cacheKey = "posts.{$subreddit}";
 
         return Cache::remember($cacheKey, self::CACHE_TTL, function () use ($subreddit) {
-            return $this->fetchPosts($subreddit);
+            $posts = $this->fetchPosts($subreddit);
+
+            // Transform image URLs to use our proxy
+            return $posts->map(function ($post) {
+                if (isset($post->url) && str_contains($post->url, 'i.redd.it')) {
+                    $post->url = route('image.proxy', ['url' => base64_encode($post->url)]);
+                }
+                return $post;
+            });
         });
     }
 

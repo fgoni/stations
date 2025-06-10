@@ -3,6 +3,7 @@
 //use CodeWizz\RedditAPI\RedditAPI;
 use App\Services\Reddit;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImageProxyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,3 +61,7 @@ Route::get('{subreddit}', function (Reddit $reddit, $subreddit) {
         'posts' => $reddit->posts($subreddit),
     ]);
 });
+
+Route::get('/image-proxy/{url}', [ImageProxyController::class, 'proxy'])
+    ->name('image.proxy')
+    ->where('url', '.*');
