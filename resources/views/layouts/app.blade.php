@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Preload critical assets -->
+    <!-- Preload assets -->
     <link rel="preload" href="{{ asset('css/app.css') }}" as="style">
     <link rel="preload" href="{{ asset('js/app.js') }}" as="script">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" as="style">
@@ -98,7 +98,7 @@
         }
     </style>
 
-    <!-- Defer non-critical JavaScript -->
+    <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/modal.js') }}" defer></script>
     <script src="{{ asset('js/layout.js') }}" defer></script>

@@ -12,11 +12,13 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .postCss('resources/css/app.css', 'public/css', [
+   .js('resources/js/modal.js', 'public/js')
+   .js('resources/js/layout.js', 'public/js')
+   .js('resources/js/dropdown.js', 'public/js')
+   .postCss('resources/css/app.css', 'public/css', [
         require('tailwindcss'),
-        require('autoprefixer'),
-    ])
-    .options({
+   ])
+   .options({
         processCssUrls: false,
         postCss: {
             plugins: [
@@ -32,3 +34,7 @@ mix.js('resources/js/app.js', 'public/js')
             poll: 1000
         }
     });
+
+if (mix.inProduction()) {
+    mix.version();
+}

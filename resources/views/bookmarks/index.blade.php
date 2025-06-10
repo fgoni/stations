@@ -43,7 +43,7 @@
                 
                 // Add error handling for images
                 img.onerror = function() {
-                    this.src = '/images/placeholder.jpg'; // Add a placeholder image
+                    this.src = "{{ asset('images/placeholder.jpg') }}"; // Add a placeholder image
                 };
                 
                 const button = document.createElement('button');
