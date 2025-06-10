@@ -82,10 +82,6 @@
             margin-top: 8px;
             will-change: transform, opacity; /* Optimize animations */
         }
-        .dropdown:hover .dropdown-content {
-            display: block;
-            animation: dropdownFade 0.2s ease;
-        }
         .dropdown-content a {
             color: white;
             padding: 12px 16px;
@@ -100,21 +96,13 @@
             background: rgba(255, 255, 255, 0.15);
             color: white;
         }
-        @keyframes dropdownFade {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
     </style>
 
     <!-- Defer non-critical JavaScript -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/modal.js') }}" defer></script>
+    <script src="{{ asset('js/layout.js') }}" defer></script>
+    <script src="{{ asset('js/dropdown.js') }}" defer></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js" defer></script>
 </head>
@@ -126,31 +114,36 @@
     </div>
     <h2 class="text-white font-bold text-3xl text-center my-3 capitalize">{{ config('app.name') }}</h2>
     <nav class="flex justify-center mb-8">
-        <div class="dropdown">
-            <button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors">
-                Browse Stations
-                <i class="fas fa-chevron-down text-sm"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url('averagebattlestations') }}" class="{{ request()->path() === 'averagebattlestations' ? 'active' : '' }}">
-                    Average Battlestations
-                </a>
-                <a href="{{ url('workstations') }}" class="{{ request()->path() === 'workstations' ? 'active' : '' }}">
-                    Work Stations
-                </a>
-                <a href="{{ url('battlestations') }}" class="{{ request()->path() === 'battlestations' ? 'active' : '' }}">
-                    Battlestations
-                </a>
-                <a href="{{ url('macsetups') }}" class="{{ request()->path() === 'macsetups' ? 'active' : '' }}">
-                    Mac Setups
-                </a>
-                <a href="{{ url('shittybattlestations') }}" class="{{ request()->path() === 'shittybattlestations' ? 'active' : '' }}">
-                    Shitty Battlestations
-                </a>
-                <a href="{{ route('bookmarks.index') }}" class="{{ request()->path() === 'bookmarks' ? 'active' : '' }}">
-                    Bookmarks
-                </a>
+        <div class="flex items-center gap-4">
+            <div class="dropdown">
+                <button class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg flex items-center gap-2 transition-colors">
+                    Browse Stations
+                    <i class="fas fa-chevron-down text-sm"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="{{ url('averagebattlestations') }}" class="{{ request()->path() === 'averagebattlestations' ? 'active' : '' }}">
+                        Average Battlestations
+                    </a>
+                    <a href="{{ url('workstations') }}" class="{{ request()->path() === 'workstations' ? 'active' : '' }}">
+                        Work Stations
+                    </a>
+                    <a href="{{ url('battlestations') }}" class="{{ request()->path() === 'battlestations' ? 'active' : '' }}">
+                        Battlestations
+                    </a>
+                    <a href="{{ url('macsetups') }}" class="{{ request()->path() === 'macsetups' ? 'active' : '' }}">
+                        Mac Setups
+                    </a>
+                    <a href="{{ url('shittybattlestations') }}" class="{{ request()->path() === 'shittybattlestations' ? 'active' : '' }}">
+                        Shitty Battlestations
+                    </a>
+                    <a href="{{ route('bookmarks.index') }}" class="{{ request()->path() === 'bookmarks' ? 'active' : '' }}">
+                        Bookmarks
+                    </a>
+                </div>
             </div>
+            <button id="layoutToggle" class="bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition-colors" title="Toggle layout">
+                <i class="fas fa-th-large"></i>
+            </button>
         </div>
     </nav>
     <main class="flex-grow">

@@ -16,6 +16,81 @@
 }
 
 @layer components {
+    .content-container {
+        @apply mx-auto px-4 w-full;
+        max-width: 100%;
+    }
+
+    @screen sm {
+        .content-container {
+            max-width: 640px;
+        }
+    }
+
+    @screen md {
+        .content-container {
+            max-width: 768px;
+        }
+    }
+
+    @screen lg {
+        .content-container {
+            max-width: 1024px;
+        }
+    }
+
+    @screen xl {
+        .content-container {
+            max-width: 1280px;
+        }
+    }
+
+    @screen 2xl {
+        .content-container {
+            max-width: 1536px;
+        }
+    }
+
+    /* Grid Layout */
+    .content-container.grid-layout .content {
+        @apply flex flex-wrap justify-center gap-4;
+    }
+
+    .content-container.grid-layout .image-container {
+        @apply relative rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] mb-4;
+        scroll-snap-align: start;
+        width: 100%;
+    }
+
+    @screen sm {
+        .content-container.grid-layout .image-container {
+            width: calc(50% - 0.5rem);
+        }
+    }
+
+    @screen md {
+        .content-container.grid-layout .image-container {
+            width: calc(33.333% - 0.667rem);
+        }
+    }
+
+    @screen lg {
+        .content-container.grid-layout .image-container {
+            width: calc(25% - 0.75rem);
+        }
+    }
+
+    /* Column Layout */
+    .content-container.column-layout .content {
+        @apply flex flex-col gap-4;
+    }
+
+    .content-container.column-layout .image-container {
+        @apply relative rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02] w-full mb-4;
+        scroll-snap-align: start;
+    }
+
+    /* Common styles for image container */
     .image-container {
         @apply relative rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02];
         scroll-snap-align: start;
@@ -39,10 +114,17 @@
 
     .dropdown-content {
         @apply hidden absolute bg-gradient-to-b from-gray-800 to-gray-900 min-w-[200px] shadow-lg rounded-lg z-10 origin-top transition-all duration-200 mt-2;
+        transform: translateY(-10px);
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 0.2s ease, opacity 0.2s ease;
     }
 
-    .dropdown:hover .dropdown-content {
+    .dropdown-content.show {
         @apply block;
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
     }
 
     .dropdown-content a {

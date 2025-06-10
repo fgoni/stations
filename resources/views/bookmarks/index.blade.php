@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="content flex-grow flex flex-wrap mx-4 justify-center gap-4">
-        <div id="bookmarks-container" class="flex flex-wrap justify-center gap-4 min-h-[300px]">
+    <div class="content-container">
+        <div id="bookmarks-container" class="content flex-grow min-h-[300px]">
             <!-- Bookmarks will be loaded here via JavaScript -->
         </div>
     </div>
@@ -23,7 +23,7 @@
             // Bookmarks are already in LIFO order from localStorage
             bookmarks.forEach(station => {
                 const div = document.createElement('div');
-                div.className = 'image-container rounded-lg shadow-lg overflow-hidden transform transition-transform hover:scale-[1.02]';
+                div.className = 'image-container';
                 div.setAttribute('data-url', station.url);
                 
                 // Create elements instead of using innerHTML for better performance
@@ -68,6 +68,15 @@
             });
             
             container.appendChild(fragment);
+
+            // Initialize layout based on saved preference
+            const savedLayout = localStorage.getItem('layoutPreference') || 'grid';
+            const contentContainer = document.querySelector('.content-container');
+            if (savedLayout === 'grid') {
+                contentContainer.classList.add('grid-layout');
+            } else {
+                contentContainer.classList.add('column-layout');
+            }
         });
     </script>
 @endsection 
